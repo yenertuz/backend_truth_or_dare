@@ -4,7 +4,8 @@ function check_post() {
   if (isset($_POST["creator_id"]) == false || 
       isset($_POST["name"]) == false ||
       isset($_POST["nickname"]) == false) {
-      echo "Username not set";
+	  echo "Username not set";
+	  file_put_contents("log", "here1");
       return(-1);
   }
   return (0);
@@ -16,7 +17,8 @@ function check_if_room_name_exists($database, $room_name) {
   $result = $query->execute();
   $count = $result->fetchArray(SQLITE3_NUM)[0];
   if ($count != 0) {
-    echo "Room name taken. Please choose another room name.";
+	  $error["error"] = "Room name taken";
+	echo json_encode($error);
     return(-1);
   }
   return (0);
@@ -46,18 +48,20 @@ $status = check_post();
 
 if ($status == 0) {
 
-$status = check_if_room_name_exists($database, $_POST["name"]);
+	$status = check_if_room_name_exists($database, $_POST["name"]);
 
-if ($status == 0) {
+	if ($status == 0) {
 
-$room_id = create_room_and_assign_creator_and_member_count($database, $_POST["name"], $_POST["creator_id"]);
+		$room_id = create_room_and_assign_creator_and_member_count($database, $_POST["name"], $_POST["creator_id"]);
 
-update_user_and_assign_room_and_name($database, $_POST["creator_id"], $_POST["nickname"], $room_id);
+		update_user_and_assign_room_and_name($database, $_POST["creator_id"], $_POST["nickname"], $room_id);
 
-echo $room_id;
+		echo $room_id;
+
+	}
 
 }
 
-}
+$database->close();
 
 ?>
