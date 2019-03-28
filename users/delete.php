@@ -44,9 +44,11 @@ if (isset($_POST["id"]) == false) {
   exit();
 }
 
-$query = $database->prepare("select * from users where id = :id");
-$query->bindValue(":id", $_POST["id"]);
-$result = $query->execute();
+// $query = $database->prepare("select * from users where id = :id");
+// $query->bindValue(":id", $_POST["id"]);
+// $result = $query->execute();
+$result = $database->query("select * from users where id = " . $_POST["id"]);
+file_put_contents("log", $result);
 $user_object = $result->fetchArray(SQLITE_ASSOC);
 $room_id = $user_object["room_id"];
 

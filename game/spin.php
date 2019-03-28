@@ -65,7 +65,7 @@ function get_replier_id_and_increment_replied_count($database, $room_id, $asker_
   }
   $random_index = mt_rand(0, $result_array_length - 1);
   $selected_user = $result_array[$random_index];
-  $replied_count_of_selected_user = $selected_user["replier_count"];
+  $replied_count_of_selected_user = $selected_user["replied_count"];
   $incremented_replied_count_of_selected_user = $replied_count_of_selected_user + 1;
   $id_of_selected_user = $selected_user["id"];
   $query = $database->prepare("update users set replied_count = :replied_count where id = :id");
