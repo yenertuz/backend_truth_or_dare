@@ -113,6 +113,6 @@ $to_echo["room_description"] = $room_description;
 
 echo json_encode($to_echo);
 
-$database->close
+$database->close();
 
 ?>
