@@ -24,10 +24,11 @@ function check_if_room_name_exists($database, $room_name) {
   return (0);
 }
 
-function create_room_and_assign_creator_and_member_count($database, $name, $creator_id) {
-  $query = $database->prepare("insert into rooms (name, creator_id, member_count) values ( :name, :creator_id, 1)");
+function create_room_and_assign_creator_and_member_count_and_replier_id($database, $name, $creator_id, $creator_name) {
+  $query = $database->prepare("insert into rooms (name, creator_id, member_count, replier_user_name) values ( :name, :creator_id, 1, :replier_user_name)");
   $query->bindValue(":name", $name);
   $query->bindValue(":creator_id", $creator_id);
+  $query->bindValue(":replier_user_name", $creator_name);
   $query->execute();
   return $database->lastInsertRowID(); 
 }
@@ -52,7 +53,7 @@ if ($status == 0) {
 
 	if ($status == 0) {
 
-		$room_id = create_room_and_assign_creator_and_member_count($database, $_POST["name"], $_POST["creator_id"]);
+		$room_id = create_room_and_assign_creator_and_member_count_and_replier_id($database, $_POST["name"], $_POST["creator_id"], $_POST["name"]);
 
 		update_user_and_assign_room_and_name($database, $_POST["creator_id"], $_POST["nickname"], $room_id);
 
