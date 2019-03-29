@@ -42,7 +42,9 @@ function respin($room_object, $user_object, $database) {
     $index = mt_rand(0, $users_array_length - 1);
     $picked_user_ojbect = $users_array[$index];
     $query = $database->prepare("update rooms set asker_id = :asker_id, status = 'waiting_for_spin' where id = :id");
-    $query->bindValue(":")
+    $query->bindValue(":asker_id", $picked_user_object["id"]);
+    $query->bindValue(":id", $room_object["id"]);
+    $query->execute();
 }
 
 function exit_gracefully($database) {
@@ -57,14 +59,11 @@ $absolute_path_beginning = dirname(dirname(__FILE__));
 $user_id = $argv[1];
 $database = new SQLite3($absolute_path_beginning . "/yenertuz");
 $user_object = get_user_object($user_id, $database);
-echo json_encode($user_object);
 if ($user_object["room_id"] == null) {
     delete_user($user_object, $database);
     exit_gracefully($database);
 }
 $room_object = get_room_object($user_object["room_id"], $database);
-echo "\n\n";
-echo json_encode($room_object);
 if ($room_object["member_count"] <= 1) {
     delete_user($user_object);
     delete_room($room_object);
