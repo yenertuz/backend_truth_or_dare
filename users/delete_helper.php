@@ -48,9 +48,6 @@ function respin($room_object, $user_object, $database) {
     }
     $index = mt_rand(0, $users_array_length - 1);
     $picked_user_object = $users_array[$index];
-    echo "\n" . json_encode($users_array) . "\n";
-    echo "\n" . json_encode($picked_user_object) . "\n";
-    echo "\n" . $index . "\n";
     $query = $database->prepare("update rooms set asker_user_name = :asker_user_name , status = :status, description = :description where id = :id");
     $query->bindValue(":asker_user_name", $picked_user_object["name"]);
     $query->bindValue(":status", "waiting_for_spin");

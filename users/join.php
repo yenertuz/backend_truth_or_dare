@@ -45,7 +45,7 @@ function check_if_user_name_already_exists($database, $room_id, $user_name) {
   $result_array = $result->fetchArray(SQLITE3_NUM);
   if ($result_array[0] != 0) {
     $error["error"] = "user_name_taken";
-    echo json_encode($eror);
+    echo json_encode($error);
     exit();
   }
 }
