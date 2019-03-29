@@ -33,7 +33,6 @@ function get_room_id_and_check_if_over_20($database, $room_name) {
     echo json_encode($error);
     exit();
   }
-  increment_room_member_count($database, $room_object["id"], $room_object["member_count"]);
   return ($room_object);
 }
 
@@ -68,6 +67,8 @@ check_if_post_is_correct();
 $room_object = get_room_id_and_check_if_over_20($database, $_POST["room_name"]);
 
 check_if_user_name_already_exists($database, $room_object["id"], $_POST["user_name"]);
+
+increment_room_member_count($database, $room_object["id"], $room_object["member_count"]);
 
 update_user_room_id_and_name($database, $_POST["id"], $room_object["id"], $_POST["user_name"]);
 
